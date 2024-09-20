@@ -4,142 +4,139 @@
 #include <math.h>
 #include <stdlib.h>
 
-// Função para converter decimal para binário
+// Função para converter de base 10 para binário
 void decimalParaBinario(int num) {
-    int binario[32];
-    int i = 0;
-    
-    // Conversão de decimal para binário
-    while (num > 0) {
-        binario[i] = num % 2;
-        num = num / 2;
-        i++;
+    printf("Binario: ");
+    for (int i = 31; i >= 0; i--) {
+        printf("%d", (num >> i) & 1);
     }
-    
-    // Exibindo o binário
-    printf("Binário: ");
-    for (int j = i - 1; j >= 0; j--)
-        printf("%d", binario[j]);
     printf("\n");
 }
 
-// Função para converter decimal para octal
+// Função para converter de base 10 para octal
 void decimalParaOctal(int num) {
-    int octal[32];
-    int i = 0;
-    
-    // Conversão de decimal para octal
-    while (num > 0) {
-        octal[i] = num % 8;
-        num = num / 8;
-        i++;
-    }
-    
-    // Exibindo o octal
-    printf("Octal: ");
-    for (int j = i - 1; j >= 0; j--)
-        printf("%d", octal[j]);
-    printf("\n");
+    printf("Octal: %o\n", num);
 }
 
-// Função para converter decimal para hexadecimal
+// Função para converter de base 10 para hexadecimal
 void decimalParaHexadecimal(int num) {
-    char hexa[32];
-    int i = 0;
-    
-    // Conversão de decimal para hexadecimal
-    while (num > 0) {
-        int temp = 0;
-        temp = num % 16;
-        
-        if (temp < 10)
-            hexa[i] = temp + 48;
-        else
-            hexa[i] = temp + 55;
-        
-        num = num / 16;
-        i++;
-    }
-    
-    // Exibindo o hexadecimal
-    printf("Hexadecimal: ");
-    for (int j = i - 1; j >= 0; j--)
-        printf("%c", hexa[j]);
-    printf("\n");
+    printf("Hexadecimal: %X\n", num);
 }
 
-// Função para converter decimal para BCD
+// Função para converter de base 10 para BCD (Binary Coded Decimal)
 void decimalParaBCD(int num) {
-    int bcd[32];
-    int i = 0;
-    
-    // Conversão de decimal para BCD
-    while (num > 0) {
-        bcd[i] = num % 10;
-        num = num / 10;
-        i++;
-    }
-    
-    // Exibindo o BCD
     printf("BCD: ");
-    for (int j = i - 1; j >= 0; j--) {
-        for (int k = 3; k >= 0; k--)
-            printf("%d", (bcd[j] >> k) & 1);
+    while (num > 0) {
+        int digito = num % 10;
+        for (int i = 3; i >= 0; i--) {
+            printf("%d", (digito >> i) & 1);
+        }
         printf(" ");
+        num /= 10;
     }
     printf("\n");
 }
 
-// Função para mostrar os detalhes de um número real em float/double
-void mostrarBitsFloat(float num) {
-    union {
-        float f;
-        unsigned int i;
-    } conv;
-    conv.f = num;
-    
-    printf("Float: %.6f\n", num);
-    printf("Bits de sinal: %d\n", (conv.i >> 31) & 1);
-    printf("Expoente (com viés): %d\n", (conv.i >> 23) & 0xFF);
-    printf("Fração: 0x%x\n", conv.i & 0x7FFFFF);
+// Função para converter decimal para complemento a 2 (16 bits)
+void complementoDois(int num) {
+    unsigned short int resultado;
+
+    if (num >= 0) {
+        resultado = (unsigned short int)num; // Se for positivo, converte diretamente
+    } else {
+        resultado = (unsigned short int)(~(-num) + 1); // Se for negativo, aplica complemento a 2
+    }
+
+    printf("Complemento a 2 (16 bits): ");
+    for (int i = 15; i >= 0; i--) {
+        printf("%d", (resultado >> i) & 1);
+    }
+    printf("\n");
 }
 
-void mostrarBitsDouble(double num) {
-    union {
-        double d;
-        unsigned long long i;
-    } conv;
-    conv.d = num;
-    
-    printf("Double: %.15f\n", num);
-    printf("Bits de sinal: %d\n", (conv.i >> 63) & 1);
-    printf("Expoente (com viés): %lld\n", (conv.i >> 52) & 0x7FF);
-    printf("Fração: 0x%llx\n", conv.i & 0xFFFFFFFFFFFFF);
+// Função para converter número real para float e mostrar sinal, expoente e fração
+void mostrarFloat(float num) {
+    unsigned int bits;
+    memcpy(&bits, &num, sizeof(bits));
+
+    unsigned int sinal = (bits >> 31) & 1;
+    unsigned int expoente = (bits >> 23) & 0xFF;
+    unsigned int fracao = bits & 0x7FFFFF;
+
+    printf("Float:\n");
+    printf("Sinal: %u\n", sinal);
+    printf("Expoente (com viés de 127): %u\n", expoente);
+    printf("Fracao: %X\n", fracao);
+}
+
+// Função para converter número real para double e mostrar sinal, expoente e fração
+void mostrarDouble(double num) {
+    unsigned long long bits;
+    memcpy(&bits, &num, sizeof(bits));
+
+    unsigned long long sinal = (bits >> 63) & 1;
+    unsigned long long expoente = (bits >> 52) & 0x7FF;
+    unsigned long long fracao = bits & 0xFFFFFFFFFFFFF;
+
+    printf("Double:\n");
+    printf("Sinal: %llu\n", sinal);
+    printf("Expoente (com viés de 1023): %llu\n", expoente);
+    printf("Fracao: %llX\n", fracao);
 }
 
 int main() {
-    int num;
-    float numFloat;
-    double numDouble;
-    
-    // Leitura de um número inteiro para as conversões
-    printf("Digite um número decimal (inteiro) para converter: ");
-    scanf("%d", &num);
-    
-    // Realizando as conversões de base
-    decimalParaBinario(num);
-    decimalParaOctal(num);
-    decimalParaHexadecimal(num);
-    decimalParaBCD(num);
-    
-    // Leitura de números reais
-    printf("\nDigite um número real (float) para conversão: ");
-    scanf("%f", &numFloat);
-    mostrarBitsFloat(numFloat);
-    
-    printf("\nDigite um número real (double) para conversão: ");
-    scanf("%lf", &numDouble);
-    mostrarBitsDouble(numDouble);
-    
+    int opcao;
+    int numeroDecimal;
+    float numeroFloat;
+    double numeroDouble;
+
+    do {
+        printf("\n--- Calculadora Programador Didática ---\n");
+        printf("1. Converter de base 10 para outras bases\n");
+        printf("2. Converter numero real para float\n");
+        printf("3. Converter numero real para double\n");
+        printf("4. Converter de base 10 para complemento a 2 (16 bits)\n");
+        printf("5. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                printf("Digite um numero decimal: ");
+                scanf("%d", &numeroDecimal);
+
+                decimalParaBinario(numeroDecimal);
+                decimalParaOctal(numeroDecimal);
+                decimalParaHexadecimal(numeroDecimal);
+                decimalParaBCD(numeroDecimal);
+                break;
+
+            case 2:
+                printf("Digite um numero real (float): ");
+                scanf("%f", &numeroFloat);
+                mostrarFloat(numeroFloat);
+                break;
+
+            case 3:
+                printf("Digite um numero real (double): ");
+                scanf("%lf", &numeroDouble);
+                mostrarDouble(numeroDouble);
+                break;
+
+            case 4:
+                printf("Digite um numero decimal: ");
+                scanf("%d", &numeroDecimal);
+                complementoDois(numeroDecimal);
+                break;
+
+            case 5:
+                printf("Saindo...\n");
+                break;
+
+            default:
+                printf("Opcao invalida. Tente novamente.\n");
+        }
+    } while (opcao != 5);
+
     return 0;
 }
