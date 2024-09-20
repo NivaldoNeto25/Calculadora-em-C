@@ -1,3 +1,5 @@
+// Nivaldo Neto - Arquitetura de computadores
+
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
