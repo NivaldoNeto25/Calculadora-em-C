@@ -1,3 +1,9 @@
+### Projeto de Atividade da Faculdade
+
+Este projeto faz parte de uma atividade acadêmica, desenvolvida com o objetivo de implementar uma calculadora programador didática utilizando a linguagem C. A calculadora realiza conversões numéricas entre diferentes bases e manipula números reais, facilitando a compreensão de como os computadores lidam com diferentes sistemas de numeração e com a representação de números reais em formatos como float e double. Abaixo, segue a explicação detalhada de cada uma das funcionalidades.
+
+---
+
 ### Explicação da Calculadora Programador Didática
 
 Esta calculadora foi desenvolvida para realizar conversões numéricas entre diferentes bases e trabalhar com números reais na linguagem de programação C. A seguir, cada uma das funcionalidades será explicada em tópicos.
@@ -46,3 +52,7 @@ A calculadora também trabalha com números reais, realizando a conversão de n�
 A conversão de números reais é feita utilizando a representação binária interna de números reais, e o programa exibe as partes específicas de acordo com o formato float ou double.
 
 ---
+
+### Conclusão
+
+Esta calculadora permite a visualização didática de várias operações, incluindo conversões entre bases numéricas e a análise da estrutura interna de números reais em formato float e double. Ela é útil para fins educacionais, pois mostra os passos intermediários em cada conversão, facilitando o entendimento de como cada sistema de numeração funciona.
